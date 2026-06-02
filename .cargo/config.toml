@@ -1,0 +1,8 @@
+[build]
+target = "aarch64-unknown-none"
+
+[target.aarch64-unknown-none]
+rustflags = [
+    "-C", "link-arg=-Tlinker.ld", # use linker.ld script
+    "-C", "link-arg=--no-rosegment", # do not create rodata segment
+]
