@@ -40,4 +40,14 @@ impl MiniUart {
             ptr::write_volatile(AUX_MU_CNTL, 0b11); // re-enable txd and rxd
         }
     }
+
+    pub fn send_char(&self, c: char) {
+        unsafe {
+            // wait until fifo buffer is ready to receive data
+            while (ptr::read_volatile(AUX_MU_LSR) & 0x20) == 0 {}
+
+            // send char
+            ptr::write_volatile(AUX_MU_IO, c as u32);
+        }
+    }
 }
