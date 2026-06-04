@@ -25,9 +25,9 @@ pub struct MiniUart {
 
 impl MiniUart {
     pub fn new() -> Self {
+        // configure gpio pins to use mini uart
         let gpio = Gpio;
 
-        // configure pins to use mini uart
         gpio.set_pin_func(TXD_PIN, GPIOPinFunc::Alt5);
         gpio.set_pin_func(RXD_PIN, GPIOPinFunc::Alt5);
 
