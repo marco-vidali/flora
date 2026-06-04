@@ -66,7 +66,7 @@ impl MiniUart {
         }
     }
 
-    pub fn recv() -> char {
+    pub fn recv(&self) -> char {
         unsafe {
             // wait until there is a byte in the fifo
             while (core::ptr::read_volatile(AUX_MU_LSR) & 1) == 0 {}
