@@ -36,7 +36,7 @@ impl MiniUart {
             ptr::write_volatile(AUX_ENABLES, 1); // enable mini uart peripheral
             ptr::write_volatile(AUX_MU_CNTL, 0); // disable txd and rxd
             ptr::write_volatile(AUX_MU_IER, 0); // disable interrupts
-            ptr::write_volatile(AUX_MU_LCR, 1); // set data size to 8-bit mode
+            ptr::write_volatile(AUX_MU_LCR, 0b11); // set data size to 8-bit mode
             ptr::write_volatile(AUX_MU_MCR, 3); // set modem control to normal
             ptr::write_volatile(AUX_MU_BAUD, 541); // set baud rate (115200 baud)
             ptr::write_volatile(AUX_MU_CNTL, 0b11); // re-enable txd and rxd
