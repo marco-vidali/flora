@@ -16,8 +16,8 @@ const AUX_MU_LSR: *mut u32 = (AUX_BASE + 0x54) as *mut u32;
 const AUX_MU_CNTL: *mut u32 = (AUX_BASE + 0x60) as *mut u32;
 const AUX_MU_BAUD: *mut u32 = (AUX_BASE + 0x68) as *mut u32;
 
-const TXD_PIN: u8 = 14;
-const RXD_PIN: u8 = 15;
+const TXD_PIN_NUM: u8 = 14;
+const RXD_PIN_NUM: u8 = 15;
 
 pub struct MiniUart;
 
@@ -26,11 +26,11 @@ impl MiniUart {
         // configure gpio pins to use mini uart
         let gpio = Gpio;
 
-        gpio.set_pin_func(TXD_PIN, GpioPinFunc::Alt5);
-        gpio.set_pin_func(RXD_PIN, GpioPinFunc::Alt5);
+        gpio.set_pin_func(TXD_PIN_NUM, GpioPinFunc::Alt5);
+        gpio.set_pin_func(RXD_PIN_NUM, GpioPinFunc::Alt5);
 
-        gpio.enable_pin(TXD_PIN);
-        gpio.enable_pin(RXD_PIN);
+        gpio.enable_pin(TXD_PIN_NUM);
+        gpio.enable_pin(RXD_PIN_NUM);
 
         unsafe {
             ptr::write_volatile(AUX_ENABLES, 1); // enable mini uart peripheral
