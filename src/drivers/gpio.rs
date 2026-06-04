@@ -39,7 +39,7 @@ impl Gpio {
         }
     }
 
-    pub fn set_pin_func(&self, pin_num: u8, func: GpioPinFunc) {
+    pub fn set_pin_func(&self, pin_num: u8, pin_func: GpioPinFunc) {
         // return if pin_num is invalid
         if pin_num > 57 {
             return;
@@ -53,7 +53,7 @@ impl Gpio {
             let mut reg_val = ptr::read_volatile(reg_addr); // read entire pin GPFSEL address
 
             reg_val &= !(0b111 << bit_start); // clear pin function bits
-            reg_val |= (func as u32) << bit_start; // set function bits to desired function
+            reg_val |= (pin_func as u32) << bit_start; // set function bits to desired function
 
             ptr::write_volatile(reg_addr, reg_val); // write new GPFSEL address value
         }
