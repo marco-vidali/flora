@@ -10,7 +10,7 @@ const AUX_BASE: usize = MMIO_BASE + 0x21_5000;
 const AUX_ENABLES: *mut u32 = (AUX_BASE + 0x04) as *mut u32;
 const AUX_MU_IO: *mut u32 = (AUX_BASE + 0x40) as *mut u32;
 const AUX_MU_IER: *mut u32 = (AUX_BASE + 0x44) as *mut u32;
-const AUX_MU_LCR: *mut u32 = (AUX_BASE + 0x4c) as *mut u32;
+const AUX_MU_LCR: *mut u32 = (AUX_BASE + 0x4C) as *mut u32;
 const AUX_MU_MCR: *mut u32 = (AUX_BASE + 0x50) as *mut u32;
 const AUX_MU_LSR: *mut u32 = (AUX_BASE + 0x54) as *mut u32;
 const AUX_MU_CNTL: *mut u32 = (AUX_BASE + 0x60) as *mut u32;
@@ -72,7 +72,7 @@ impl MiniUart {
             while (ptr::read_volatile(AUX_MU_LSR) & 1) == 0 {}
 
             // read, convert and return the byte to char
-            (ptr::read_volatile(AUX_MU_IO) & 0xff) as u8 as char
+            (ptr::read_volatile(AUX_MU_IO) & 0xFF) as u8 as char
         }
     }
 }
