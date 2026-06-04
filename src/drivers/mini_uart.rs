@@ -19,12 +19,14 @@ const AUX_MU_BAUD: *mut u32 = (AUX_BASE + 0x68) as *mut u32;
 const TXD_PIN: u8 = 14;
 const RXD_PIN: u8 = 15;
 
-pub struct MiniUart<'a> {
-    gpio: &'a Gpio,
+pub struct MiniUart {
+    gpio: Gpio,
 }
 
-impl<'a> MiniUart<'a> {
-    pub fn new(gpio: &'a Gpio) -> Self {
+impl MiniUart {
+    pub fn new() -> Self {
+        let gpio = Gpio;
+
         // configure pins to use mini uart
         gpio.set_pin_func(TXD_PIN, GPIOPinFunc::Alt5);
         gpio.set_pin_func(RXD_PIN, GPIOPinFunc::Alt5);
