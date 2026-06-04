@@ -19,9 +19,7 @@ const AUX_MU_BAUD: *mut u32 = (AUX_BASE + 0x68) as *mut u32;
 const TXD_PIN: u8 = 14;
 const RXD_PIN: u8 = 15;
 
-pub struct MiniUart {
-    gpio: Gpio,
-}
+pub struct MiniUart;
 
 impl MiniUart {
     pub fn new() -> Self {
@@ -44,7 +42,7 @@ impl MiniUart {
             ptr::write_volatile(AUX_MU_CNTL, 0b11); // re-enable txd and rxd
         }
 
-        MiniUart { gpio }
+        MiniUart
     }
 
     pub fn send_char(&self, c: char) {
