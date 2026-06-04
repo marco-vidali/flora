@@ -2,6 +2,7 @@ use crate::drivers::MMIO_BASE;
 use core::ptr;
 
 const GPIO_BASE: usize = MMIO_BASE + 0x20_0000;
+
 const GPIO_PUP_PDN0: *mut u32 = (GPIO_BASE + 0xE4) as *mut u32;
 const GPFSEL0: *mut u32 = GPIO_BASE as *mut u32;
 
