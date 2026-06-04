@@ -69,10 +69,10 @@ impl MiniUart {
     pub fn recv(&self) -> char {
         unsafe {
             // wait until there is a byte in the fifo
-            while (core::ptr::read_volatile(AUX_MU_LSR) & 1) == 0 {}
+            while (ptr::read_volatile(AUX_MU_LSR) & 1) == 0 {}
 
             // read, convert and return the byte to char
-            (core::ptr::read_volatile(AUX_MU_IO) & 0xff) as u8 as char
+            (ptr::read_volatile(AUX_MU_IO) & 0xff) as u8 as char
         }
     }
 }
