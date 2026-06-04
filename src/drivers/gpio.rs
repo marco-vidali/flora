@@ -6,7 +6,7 @@ const GPIO_BASE: usize = MMIO_BASE + 0x20_0000;
 const GPIO_PUP_PDN0: *mut u32 = (GPIO_BASE + 0xE4) as *mut u32;
 const GPFSEL0: *mut u32 = GPIO_BASE as *mut u32;
 
-pub enum GPIOPinFunc {
+pub enum GpioPinFunc {
     Input = 0b000,
     Output = 0b001,
     Alt0 = 0b100,
@@ -39,7 +39,7 @@ impl Gpio {
         }
     }
 
-    pub fn set_pin_func(&self, pin_num: u8, func: GPIOPinFunc) {
+    pub fn set_pin_func(&self, pin_num: u8, func: GpioPinFunc) {
         // return if pin_num is invalid
         if pin_num > 57 {
             return;

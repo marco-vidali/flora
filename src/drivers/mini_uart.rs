@@ -2,7 +2,7 @@ use core::ptr;
 
 use crate::drivers::{
     MMIO_BASE,
-    gpio::{GPIOPinFunc, Gpio},
+    gpio::{Gpio, GpioPinFunc},
 };
 
 const AUX_BASE: usize = MMIO_BASE + 0x21_5000;
@@ -26,8 +26,8 @@ impl MiniUart {
         // configure gpio pins to use mini uart
         let gpio = Gpio;
 
-        gpio.set_pin_func(TXD_PIN, GPIOPinFunc::Alt5);
-        gpio.set_pin_func(RXD_PIN, GPIOPinFunc::Alt5);
+        gpio.set_pin_func(TXD_PIN, GpioPinFunc::Alt5);
+        gpio.set_pin_func(RXD_PIN, GpioPinFunc::Alt5);
 
         gpio.enable_pin(TXD_PIN);
         gpio.enable_pin(RXD_PIN);
