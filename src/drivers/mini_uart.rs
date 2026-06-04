@@ -24,13 +24,13 @@ pub struct MiniUart<'a> {
 }
 
 impl<'a> MiniUart<'a> {
-    pub fn init(&self) {
+    pub fn new(gpio: &'a Gpio) -> Self {
         // configure pins to use mini uart
-        self.gpio.set_pin_func(TXD_PIN, GPIOPinFunc::Alt5);
-        self.gpio.set_pin_func(RXD_PIN, GPIOPinFunc::Alt5);
+        gpio.set_pin_func(TXD_PIN, GPIOPinFunc::Alt5);
+        gpio.set_pin_func(RXD_PIN, GPIOPinFunc::Alt5);
 
-        self.gpio.enable_pin(TXD_PIN);
-        self.gpio.enable_pin(RXD_PIN);
+        gpio.enable_pin(TXD_PIN);
+        gpio.enable_pin(RXD_PIN);
 
         unsafe {
             ptr::write_volatile(AUX_ENABLES, 1); // enable mini uart peripheral
@@ -41,6 +41,8 @@ impl<'a> MiniUart<'a> {
             ptr::write_volatile(AUX_MU_BAUD, 541); // set baud rate (115200 baud)
             ptr::write_volatile(AUX_MU_CNTL, 0b11); // re-enable txd and rxd
         }
+
+        MiniUart { gpio }
     }
 
     pub fn send_char(&self, c: char) {
