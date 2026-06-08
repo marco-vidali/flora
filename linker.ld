@@ -11,10 +11,10 @@ SECTIONS
     
     /* 8-byte aligned bss section */
     . = ALIGN(0x8);
-    bss_begin = .;
+    _bss_begin = .;
     .bss : { *(.bss .bss.*) }
     . = ALIGN(0x8);
-    bss_end = .;
+    _bss_end = .;
 
     /* discard metadata to place _start correctly */
     /DISCARD/ : {
