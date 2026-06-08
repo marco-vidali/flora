@@ -30,7 +30,7 @@ impl Gpio {
         let bit_start = (pin_num % 16) * 2; // calculate pin bits start position
 
         unsafe {
-            let reg_addr = GPIO_PUP_PDN0.add(reg_num * 4); // calculate pin registry address
+            let reg_addr = GPIO_PUP_PDN0.add(reg_num); // calculate pin registry address
             let mut reg_val = ptr::read_volatile(reg_addr); // read entire pin GPIO_PUP_PDN address
 
             reg_val &= !(0b11 << bit_start); // clear pin PUP_PDN bits
@@ -49,7 +49,7 @@ impl Gpio {
         let bit_start = (pin_num % 10) * 3; // calculate pin bits start position
 
         unsafe {
-            let reg_addr = GPFSEL0.add(reg_num * 4); // calculate pin registry address
+            let reg_addr = GPFSEL0.add(reg_num); // calculate pin registry address
             let mut reg_val = ptr::read_volatile(reg_addr); // read entire pin GPFSEL address
 
             reg_val &= !(0b111 << bit_start); // clear pin function bits
