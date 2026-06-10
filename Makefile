@@ -1,6 +1,8 @@
 ARMGNU ?= aarch64-none-elf
 BOOTMNT ?= /Volumes/bootfs
 
+.PHONY: default armstub clean
+
 default:
 	cargo clean
 	cargo build --release
@@ -11,3 +13,18 @@ default:
 	cp -r config.txt $(BOOTMNT)/
 
 	sync
+
+build/armstub_s.o: src/armstub.s
+	mkdir -p $(@D)
+	$(ARMGNU)-as $< -o $@
+
+armstub: build/armstub_s.o
+	$(ARMGNU)-ld --section-start=.text=0 -o build/armstub.elf build/armstub_s.o # build armstub
+	$(ARMGNU)-objcopy build/armstub.elf -O binary build/armstub.bin
+
+	cp build/armstub.bin $(BOOTMNT)/
+	sync
+
+clean:
+	cargo clean
+	rm -rf armstub/build

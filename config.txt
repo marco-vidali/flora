@@ -1,1 +1,2 @@
 arm_64bit=1
+armstub=armstub.bin
