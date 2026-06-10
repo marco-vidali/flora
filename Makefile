@@ -29,4 +29,4 @@ armstub: build/armstub_s.o
 
 clean:
 	cargo clean
-	rm -rf armstub/build
+	rm -rf build
