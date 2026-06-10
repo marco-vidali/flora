@@ -23,6 +23,8 @@ armstub: build/armstub_s.o
 	$(ARMGNU)-objcopy build/armstub.elf -O binary build/armstub.bin
 
 	cp build/armstub.bin $(BOOTMNT)/
+	cp -r config.txt $(BOOTMNT)/
+
 	sync
 
 clean:
