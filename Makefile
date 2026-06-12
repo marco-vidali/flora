@@ -3,7 +3,7 @@ BOOTMNT ?= /Volumes/bootfs
 
 .PHONY: default armstub clean
 
-default:
+default: | build
 	cargo clean
 	cargo build --release
 
@@ -14,11 +14,14 @@ default:
 
 	sync
 
+build:
+	mkdir -p build # create build folder
+
 build/armstub_s.o: src/board/armstub.s
 	mkdir -p $(@D)
 	$(ARMGNU)-as $< -o $@
 
-armstub: build/armstub_s.o
+armstub: build/armstub_s.o | build
 	$(ARMGNU)-ld --section-start=.text=0 -o build/armstub.elf build/armstub_s.o # build armstub
 	$(ARMGNU)-objcopy build/armstub.elf -O binary build/armstub.bin
 
