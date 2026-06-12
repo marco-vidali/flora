@@ -3,7 +3,7 @@
 
 use core::{hint, panic::PanicInfo};
 
-use flora::{cpu, drivers::mini_uart::MiniUart};
+use flora::{board::cpu, drivers::mini_uart::MiniUart};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() -> ! {

@@ -14,7 +14,7 @@ default:
 
 	sync
 
-build/armstub_s.o: src/armstub.s
+build/armstub_s.o: src/board/armstub.s
 	mkdir -p $(@D)
 	$(ARMGNU)-as $< -o $@
 

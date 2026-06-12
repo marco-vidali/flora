@@ -1,4 +1,4 @@
 #![no_std]
 
-pub mod cpu;
+pub mod board;
 pub mod drivers;

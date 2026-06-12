@@ -1,11 +1,11 @@
 fn main() {
-    println!("cargo:rerun-if-changed=src/boot.s"); // recompile if boot.s changes
+    println!("cargo:rerun-if-changed=src/board/boot.s"); // recompile if boot.s changes
 
     // initialize and configure assembler for boot.s
     let mut build = cc::Build::new();
 
     build
-        .file("src/boot.s")
+        .file("src/board/boot.s")
         .target("aarch64-unknown-none")
         .compiler("clang");
 
