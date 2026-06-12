@@ -53,11 +53,6 @@ impl MiniUart {
             // send char
             ptr::write_volatile(AUX_MU_IO, c as u32);
         }
-
-        // send \r if sending \n to fix new line start
-        if c == '\n' {
-            self.send_char('\r');
-        }
     }
 
     pub fn send_str(&self, s: &str) {
