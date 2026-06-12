@@ -1,4 +1,4 @@
-use core::ptr;
+use core::{fmt, ptr};
 
 use crate::drivers::{
     MMIO_BASE,
@@ -79,5 +79,13 @@ impl MiniUart {
             // read, convert and return the byte to char
             (ptr::read_volatile(AUX_MU_IO) & 0xFF) as u8 as char
         }
+    }
+}
+
+// implement write trait
+impl fmt::Write for MiniUart {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        self.send_str(s);
+        Ok(())
     }
 }
