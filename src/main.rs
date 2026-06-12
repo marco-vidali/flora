@@ -16,6 +16,7 @@ pub extern "C" fn kernel_main() -> ! {
 
     mini_uart.send_str("Current exception level: ");
     mini_uart.send_char((el + b'0') as char);
+    mini_uart.send_char('\n');
 
     loop {
         hint::spin_loop(); // wait without overheating
