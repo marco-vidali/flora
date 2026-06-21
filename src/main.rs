@@ -3,7 +3,10 @@
 
 use core::{fmt::Write, hint, panic::PanicInfo};
 
-use flora::{board::cpu, drivers::mini_uart::MiniUart};
+use flora::{
+    board::{cpu, irq::IrqManager},
+    drivers::mini_uart::MiniUart,
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() -> ! {
@@ -15,6 +18,10 @@ pub extern "C" fn kernel_main() -> ! {
     let el = cpu::get_current_el();
     let el = (el + b'0') as char;
     let _ = write!(mini_uart, "Current exception level: {}.\n", el);
+
+    // enable interrupt requests manager
+    IrqManager::new();
+    mini_uart.send_str("[*] Interrupt requests manager enabled.\n");
 
     loop {
         hint::spin_loop(); // wait without overheating
