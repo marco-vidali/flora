@@ -5,23 +5,22 @@ use core::{fmt::Write, hint, panic::PanicInfo};
 
 use flora::{
     board::{cpu, irq::IrqManager},
-    drivers::mini_uart::MiniUart,
+    debug,
 };
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() -> ! {
     // print welcome message
-    let mut mini_uart = MiniUart::new();
-    mini_uart.send_str("Welcome to flora.\n");
+    debug!("Welcome to flora.\n");
 
     // print current exception level
     let el = cpu::get_current_el();
     let el = (el + b'0') as char;
-    let _ = write!(mini_uart, "Current exception level: {}.\n", el);
+    debug!("Current exception level: {}.\n", el);
 
     // enable interrupt requests manager
     IrqManager::new();
-    mini_uart.send_str("[*] Interrupt requests manager enabled.\n");
+    debug!("[*] Interrupt requests manager enabled.\n");
 
     loop {
         hint::spin_loop(); // wait without overheating
