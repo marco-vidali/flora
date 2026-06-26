@@ -54,7 +54,7 @@ pub extern "C" fn handle_irq() {
 pub struct IrqManager;
 
 impl IrqManager {
-    pub fn new() -> Self {
+    pub fn init() {
         // store vectors table address on vbar_el1
         unsafe {
             asm!(
@@ -77,7 +77,5 @@ impl IrqManager {
         unsafe {
             asm!("msr daifclr, #0b10"); // remove irq mask
         }
-
-        IrqManager {}
     }
 }

@@ -19,8 +19,8 @@ pub extern "C" fn kernel_main() -> ! {
     let el = (el + b'0') as char;
     debug!("[*] Current exception level: {}.\n", el);
 
-    // enable interrupt requests manager
-    IrqManager::new();
+    // init interrupt requests manager
+    IrqManager::init();
     debug!("[*] Interrupt requests manager enabled.\n");
 
     loop {
