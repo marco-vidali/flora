@@ -19,10 +19,10 @@ const AUX_MU_BAUD: *mut u32 = (AUX_BASE + 0x68) as *mut u32;
 const TXD_PIN_NUM: u8 = 14;
 const RXD_PIN_NUM: u8 = 15;
 
-pub struct MiniUart {}
+pub struct MiniUart;
 
 impl MiniUart {
-    pub fn new() -> Self {
+    pub fn init() {
         // configure gpio pins to use mini uart
         let gpio = Gpio;
 
@@ -41,8 +41,6 @@ impl MiniUart {
             ptr::write_volatile(AUX_MU_BAUD, 541); // set baud rate (115200 baud)
             ptr::write_volatile(AUX_MU_CNTL, 0b11); // re-enable txd and rxd
         }
-
-        MiniUart {}
     }
 
     pub fn send_char(&self, c: char) {

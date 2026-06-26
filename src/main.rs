@@ -6,10 +6,14 @@ use core::{fmt::Write, hint, panic::PanicInfo};
 use flora::{
     board::{cpu, irq::IrqManager},
     debug,
+    drivers::mini_uart::MiniUart,
 };
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() -> ! {
+    // init mini uart
+    MiniUart::init();
+
     // print welcome message
     debug!("Welcome to flora.\n");
 
