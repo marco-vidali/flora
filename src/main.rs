@@ -15,14 +15,14 @@ pub extern "C" fn kernel_main() -> ! {
     MiniUart::init();
     debug!("[*] Mini UART initialized.\n");
 
-    // init interrupt requests manager
-    IrqManager::init();
-    debug!("[*] Interrupt requests manager enabled.\n");
-
     // print current exception level
     let el = cpu::get_current_el();
     let el = (el + b'0') as char;
     debug!("[*] Current exception level: {}.\n", el);
+
+    // init interrupt requests manager
+    IrqManager::init();
+    debug!("[*] Interrupt requests manager enabled.\n");
 
     loop {
         hint::spin_loop(); // wait without overheating
