@@ -1,8 +1,9 @@
+use core::arch::asm;
 use core::ptr;
-use core::{arch::asm, fmt::Write};
 
 use crate::debug;
 use crate::drivers::MMIO_BASE;
+use crate::macros::DebugType;
 
 const IRQ_BASE: usize = MMIO_BASE + 0x0000_B200;
 
@@ -36,8 +37,8 @@ pub extern "C" fn show_invalid_entry_message(error_type: u32, esr: u64, address:
         .unwrap_or(&"Unknown error");
 
     debug!(
-        "[!] Error caught: {} - ESR: {:X} - Address: {:X}\n",
-        msg, esr, address
+        DebugType::Error,
+        "Error caught: {} - ESR: {:X} - Address: {:X}.", msg, esr, address
     );
 }
 
