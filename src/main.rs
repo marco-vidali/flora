@@ -13,6 +13,7 @@ use flora::{
 pub extern "C" fn kernel_main() -> ! {
     // init mini uart
     MiniUart::init();
+    debug!("[*] Mini UART initialized.\n");
 
     // init interrupt requests manager
     IrqManager::init();
