@@ -17,7 +17,7 @@ pub extern "C" fn kernel_main() -> ! {
     // print current exception level
     let el = cpu::get_current_el();
     let el = (el + b'0') as char;
-    debug!("Current exception level: {}.\n", el);
+    debug!("[*] Current exception level: {}.\n", el);
 
     // enable interrupt requests manager
     IrqManager::new();
