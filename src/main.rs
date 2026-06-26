@@ -14,9 +14,6 @@ pub extern "C" fn kernel_main() -> ! {
     // init mini uart
     MiniUart::init();
 
-    // print welcome message
-    debug!("Welcome to flora.\n");
-
     // print current exception level
     let el = cpu::get_current_el();
     let el = (el + b'0') as char;
