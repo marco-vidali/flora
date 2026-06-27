@@ -3,7 +3,7 @@ use core::ptr;
 
 use crate::debug;
 use crate::drivers::MMIO_BASE;
-use crate::macros::DebugType;
+use crate::system::debug::DebugType;
 
 const IRQ_BASE: usize = MMIO_BASE + 0x0000_B200;
 

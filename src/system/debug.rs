@@ -22,7 +22,7 @@ macro_rules! debug {
             let mut mini_uart = $crate::drivers::mini_uart::MiniUart;
 
             // send formatted message to mini uart
-            let _ = write!(mini_uart, "{} ", $crate::macros::DebugType::as_tag(&$type)); // send formatted type tag to mini uart
+            let _ = write!(mini_uart, "{} ", $crate::system::debug::DebugType::as_tag(&$type)); // send formatted type tag to mini uart
             let _ = core::writeln!(mini_uart, $($s),*); // send the expression formatted with the parameters to mini uart
         }
     };

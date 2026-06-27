@@ -7,7 +7,7 @@ use flora::{
     board::{cpu, irq::IrqManager},
     debug,
     drivers::mini_uart::MiniUart,
-    macros::DebugType,
+    system::debug::DebugType,
 };
 
 #[unsafe(no_mangle)]
