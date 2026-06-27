@@ -1,9 +1,6 @@
-use core::arch::asm;
-use core::ptr;
+use core::{arch::asm, ptr};
 
-use crate::debug;
-use crate::drivers::MMIO_BASE;
-use crate::system::debug::DebugType;
+use crate::{debug, drivers::MMIO_BASE, system::debug::DebugType};
 
 const IRQ_BASE: usize = MMIO_BASE + 0x0000_B200;
 
