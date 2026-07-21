@@ -1,0 +1,7 @@
+[build]
+target = "aarch64-unknown-uefi"
+
+[target.aarch64-unknown-uefi]
+rustflags = [
+    "-C", "link-arg=/subsystem:efi_application", # Tell the linker to put the EFI flag in the header of the .efi file
+]

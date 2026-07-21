@@ -1,0 +1,13 @@
+[package]
+name = "flora"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+uefi = {version = "0.39.0", features = ["panic_handler"]}
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
