@@ -21,7 +21,7 @@ impl Shell {
     }
 
     fn read_key() -> Option<Key> {
-        uefi::system::with_stdin(|stdin| stdin.read_key()).expect("Expected input")
+        uefi::system::with_stdin(|stdin| stdin.read_key()).expect("[!] Failed to access keyboard.")
     }
 
     fn handle_key(key: Key) {
