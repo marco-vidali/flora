@@ -2,13 +2,13 @@
 #![no_main]
 
 use flora::shell::Shell;
-use uefi::{prelude::*, println, proto::console::text::Output};
+use uefi::{Status, println, proto::console::text::Output};
 
-#[entry]
+#[uefi::entry]
 fn main() -> Status {
     uefi::helpers::init().unwrap(); // Init UEFI boot services
 
-    system::with_stdout(Output::clear).unwrap(); // Clear screen
+    uefi::system::with_stdout(Output::clear).unwrap(); // Clear screen
 
     println!("Welcome to flora.\n");
 
