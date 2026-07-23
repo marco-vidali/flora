@@ -45,8 +45,8 @@ impl Shell {
                 }
             },
 
-            Key::Special(s) => {
-                // handle special keys
+            Key::Special(_) => {
+                // Handle special keys
             }
         };
     }
