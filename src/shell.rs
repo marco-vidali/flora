@@ -1,11 +1,12 @@
 extern crate alloc;
 
-use crate::config;
+use crate::{commands::Commands, config};
 use alloc::string::String;
 use spin::{LazyLock, Mutex};
 use uefi::{print, proto::console::text::Key};
 
 static COMMAND: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
+static COMMANDS_TABLE: [(&str, fn()); 1] = [("clear", Commands::clear_screen)];
 
 pub struct Shell;
 
@@ -56,7 +57,20 @@ impl Shell {
 
         if !command.is_empty() {
             print!("\r\n");
-            print!("{}", command);
+
+            let mut command_found = false;
+
+            // Find corresponding function and execute it
+            for c in COMMANDS_TABLE {
+                if c.0 == command.as_str() {
+                    command_found = true;
+                    c.1();
+                }
+            }
+
+            if !command_found {
+                print!("[!] Command not found.")
+            }
 
             *command = String::new();
         }
