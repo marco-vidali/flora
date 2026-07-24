@@ -6,7 +6,10 @@ use spin::{LazyLock, Mutex};
 use uefi::{print, proto::console::text::Key};
 
 static COMMAND: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
-static COMMANDS_TABLE: [(&str, fn()); 1] = [("clear", Commands::clear_screen)];
+static COMMANDS_TABLE: [(&str, fn()); 2] = [
+    ("clear", Commands::clear_screen),
+    ("off", Commands::shut_down),
+];
 
 pub struct Shell;
 
