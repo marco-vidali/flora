@@ -1,4 +1,7 @@
-use uefi::proto::console::gop::{GraphicsOutput, PixelFormat};
+use uefi::proto::console::{
+    gop::{GraphicsOutput, PixelFormat},
+    text::Output,
+};
 
 static mut SCREEN_WIDTH: usize = 0;
 static mut SCREEN_HEIGHT: usize = 0;
@@ -33,6 +36,10 @@ impl Screen {
             PIXEL_FORMAT = pixel_format;
             FB_PTR = fb_ptr;
         }
+    }
+
+    pub fn clear() {
+        uefi::system::with_stdout(Output::clear).expect("[!] Failed to clear screen.");
     }
 
     pub fn draw_pixel(x: usize, y: usize, color: (u8, u8, u8)) {
