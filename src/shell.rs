@@ -1,12 +1,12 @@
 extern crate alloc;
 
-use crate::{commands::Commands, config, screen::Screen};
+use crate::{config, power::Power, screen::Screen};
 use alloc::string::String;
 use spin::{LazyLock, Mutex};
 use uefi::{print, proto::console::text::Key};
 
 static COMMAND: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
-static COMMANDS_TABLE: [(&str, fn()); 2] = [("clear", Screen::clear), ("off", Commands::shut_down)];
+static COMMANDS_TABLE: [(&str, fn()); 2] = [("clear", Screen::clear), ("off", Power::shut_down)];
 
 pub struct Shell;
 

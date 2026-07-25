@@ -1,8 +1,8 @@
 use uefi::{Status, runtime::ResetType};
 
-pub struct Commands;
+pub struct Power;
 
-impl Commands {
+impl Power {
     pub fn shut_down() {
         uefi::runtime::reset(ResetType::SHUTDOWN, Status::SUCCESS, None);
     }
