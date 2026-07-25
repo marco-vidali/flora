@@ -1,8 +1,8 @@
 #![no_std]
 #![no_main]
 
-use flora::{commands::Commands, shell::Shell};
-use uefi::{Status, println};
+use flora::{commands::Commands, screen::Screen};
+use uefi::Status;
 
 #[uefi::entry]
 fn main() -> Status {
@@ -10,9 +10,7 @@ fn main() -> Status {
 
     Commands::clear_screen();
 
-    println!("Welcome to flora.\n");
-
-    Shell::init();
+    Screen::init();
 
     loop {
         core::hint::spin_loop(); // Loop without overheating
