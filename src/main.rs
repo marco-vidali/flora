@@ -1,12 +1,13 @@
 #![no_std]
 #![no_main]
 
-use flora::screen::Screen;
+use const_format::concatcp;
+use flora::{config::ERROR_FLAG, screen::Screen};
 use uefi::Status;
 
 #[uefi::entry]
 fn main() -> Status {
-    uefi::helpers::init().unwrap(); // Init UEFI boot services
+    uefi::helpers::init().expect(concatcp!(ERROR_FLAG, "Failed to init UEFI boot services.")); // Init UEFI boot services
 
     Screen::clear();
     Screen::init();

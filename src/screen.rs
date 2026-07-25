@@ -1,7 +1,10 @@
+use const_format::concatcp;
 use uefi::proto::console::{
     gop::{GraphicsOutput, PixelFormat},
     text::Output,
 };
+
+use crate::config::ERROR_FLAG;
 
 static mut SCREEN_WIDTH: usize = 0;
 static mut SCREEN_HEIGHT: usize = 0;
@@ -14,10 +17,14 @@ pub struct Screen;
 impl Screen {
     pub fn init() {
         // Open Graphics Output Protocol
-        let gop_handle = uefi::boot::get_handle_for_protocol::<GraphicsOutput>()
-            .expect("[!] Failed to get graphics output protocol handle.");
-        let mut gop = uefi::boot::open_protocol_exclusive::<GraphicsOutput>(gop_handle)
-            .expect("[!] Failed to open graphics output protocol.");
+        let gop_handle = uefi::boot::get_handle_for_protocol::<GraphicsOutput>().expect(concatcp!(
+            ERROR_FLAG,
+            "Failed to get graphics output protocol handle."
+        ));
+
+        let mut gop = uefi::boot::open_protocol_exclusive::<GraphicsOutput>(gop_handle).expect(
+            concatcp!(ERROR_FLAG, "Failed to open graphics output protocol."),
+        );
 
         // Get GOP information
         let mode_info = gop.current_mode_info();
@@ -39,7 +46,8 @@ impl Screen {
     }
 
     pub fn clear() {
-        uefi::system::with_stdout(Output::clear).expect("[!] Failed to clear screen.");
+        uefi::system::with_stdout(Output::clear)
+            .expect(concatcp!(ERROR_FLAG, "Failed to clear screen."));
     }
 
     pub fn draw_pixel(x: usize, y: usize, color: (u8, u8, u8)) {

@@ -1,7 +1,12 @@
 extern crate alloc;
 
-use crate::{config, power::Power, screen::Screen};
+use crate::{
+    config::{self, ERROR_FLAG},
+    power::Power,
+    screen::Screen,
+};
 use alloc::string::String;
+use const_format::concatcp;
 use spin::{LazyLock, Mutex};
 use uefi::{print, proto::console::text::Key};
 
@@ -28,7 +33,8 @@ impl Shell {
     }
 
     fn read_key() -> Option<Key> {
-        uefi::system::with_stdin(|stdin| stdin.read_key()).expect("[!] Failed to access keyboard.")
+        uefi::system::with_stdin(|stdin| stdin.read_key())
+            .expect(concatcp!(ERROR_FLAG, "Failed to access keyboard."))
     }
 
     fn handle_key(key: Key) {
@@ -69,7 +75,7 @@ impl Shell {
             }
 
             if !command_found {
-                print!("[!] Command not found.")
+                // print!(concatcp!(ERROR_FLAG, "Command not found."));
             }
 
             *command = String::new();
