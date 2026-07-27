@@ -4,7 +4,7 @@ use uefi::proto::console::{
     text::Output,
 };
 
-use crate::config::ERROR_FLAG;
+use crate::config::{ERROR_FLAG, FONT_SCALE};
 
 static FONT: [[u8; 8]; 95] = [
     [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00], // 0x20 Space
@@ -184,12 +184,22 @@ impl Screen {
         let char_font = FONT[char_index];
 
         // Draw each line of pixels
-        for i in 0..8 {
-            let mut bits = char_font[i];
+        for col in 0..8 {
+            let mut bits = char_font[col];
 
-            for j in 0..8 {
+            for row in 0..8 {
                 let bit = (bits & 0x80) >> 7;
-                Self::draw_pixel(x + j, y + i, (255 * bit, 255 * bit, 255 * bit));
+
+                for pixel_col in 0..FONT_SCALE {
+                    for pixel_row in 0..FONT_SCALE {
+                        Self::draw_pixel(
+                            x + row * FONT_SCALE + pixel_col,
+                            y + col * FONT_SCALE + pixel_row,
+                            (255 * bit, 255 * bit, 255 * bit),
+                        );
+                    }
+                }
+
                 bits <<= 1;
             }
         }
@@ -201,7 +211,7 @@ impl Screen {
 
         for c in s.chars() {
             if c == '\n' {
-                cursor_y += 8;
+                cursor_y += 8 * FONT_SCALE;
                 continue;
             }
 
@@ -216,7 +226,7 @@ impl Screen {
             }
 
             Self::draw_char(c, cursor_x, cursor_y);
-            cursor_x += 8;
+            cursor_x += 8 * FONT_SCALE;
         }
     }
 }
