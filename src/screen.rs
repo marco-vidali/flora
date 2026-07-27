@@ -194,4 +194,29 @@ impl Screen {
             }
         }
     }
+
+    pub fn draw_string(s: &str, x: usize, y: usize) {
+        let mut cursor_x = x;
+        let mut cursor_y = y;
+
+        for c in s.chars() {
+            if c == '\n' {
+                cursor_y += 8;
+                continue;
+            }
+
+            if c == '\r' {
+                cursor_x = x;
+                continue;
+            }
+
+            // Prevent crashes from overflow or underflow
+            if (c as usize) < 0x20 || (c as usize) >= 0x20 + FONT.len() {
+                continue;
+            }
+
+            Self::draw_char(c, cursor_x, cursor_y);
+            cursor_x += 8;
+        }
+    }
 }

@@ -12,6 +12,8 @@ fn main() -> Status {
     Screen::clear();
     Screen::init();
 
+    Screen::draw_string("Welcome to flora.", 0, 0);
+
     loop {
         core::hint::spin_loop(); // Loop without overheating
     }
