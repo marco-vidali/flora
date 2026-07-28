@@ -6,6 +6,12 @@ use uefi::proto::console::{
 
 use crate::config::{ERROR_FLAG, FONT_SCALE};
 
+static mut SCREEN_WIDTH: usize = 0;
+static mut SCREEN_HEIGHT: usize = 0;
+static mut STRIDE: usize = 0;
+static mut PIXEL_FORMAT: PixelFormat = PixelFormat::Rgb;
+static mut FB_PTR: *mut u8 = core::ptr::null::<u8>() as *mut u8;
+
 static FONT: [[u8; 8]; 95] = [
     [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00], // 0x20 Space
     [0x00, 0x0C, 0x0C, 0x0C, 0x0C, 0x00, 0x0C, 0x00], // 0x21 !
@@ -104,11 +110,8 @@ static FONT: [[u8; 8]; 95] = [
     [0x0C, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00], // 0x7E ~
 ];
 
-static mut SCREEN_WIDTH: usize = 0;
-static mut SCREEN_HEIGHT: usize = 0;
-static mut STRIDE: usize = 0;
-static mut PIXEL_FORMAT: PixelFormat = PixelFormat::Rgb;
-static mut FB_PTR: *mut u8 = core::ptr::null::<u8>() as *mut u8;
+static mut CURSOR_X: usize = 0;
+static mut CURSOR_Y: usize = 0;
 
 pub struct Screen;
 
@@ -229,4 +232,61 @@ impl Screen {
             cursor_x += 8 * FONT_SCALE;
         }
     }
+
+    fn draw_string_cursor(s: &str) {
+        unsafe {
+            for c in s.chars() {
+                if c == '\n' {
+                    CURSOR_Y += 8 * FONT_SCALE;
+                    continue;
+                }
+
+                if c == '\r' {
+                    CURSOR_X = 0;
+                    continue;
+                }
+
+                // Prevent crashes from overflow or underflow
+                if (c as usize) < 0x20 || (c as usize) >= 0x20 + FONT.len() {
+                    continue;
+                }
+
+                Self::draw_char(c, CURSOR_X, CURSOR_Y);
+                CURSOR_X += 8 * FONT_SCALE;
+            }
+        }
+    }
+}
+
+impl core::fmt::Write for Screen {
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
+        Self::draw_string_cursor(s);
+        Ok(())
+    }
+}
+
+#[macro_export]
+macro_rules! print {
+    // Match any expression and an undefined number of parameters
+    ($($arg:tt)*) => {
+        {
+            use core::fmt::Write;
+            let mut screen = $crate::screen::Screen;
+            let _ = core::write!(screen, $($arg)*); // Draw the expression formatted with the parameters to screen
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! println {
+    ($($arg:tt)*) => {
+        {
+            use core::fmt::Write;
+
+            let mut screen = $crate::screen::Screen;
+
+            let _ = core::write!(screen, $($arg)*);
+            let _ = core::write!(screen, "\n\r");
+        }
+    };
 }

@@ -2,7 +2,7 @@
 #![no_main]
 
 use const_format::concatcp;
-use flora::{config::ERROR_FLAG, screen::Screen};
+use flora::{config::ERROR_FLAG, print, println, screen::Screen};
 use uefi::Status;
 
 #[uefi::entry]
@@ -12,7 +12,7 @@ fn main() -> Status {
     Screen::clear();
     Screen::init();
 
-    Screen::draw_string("Welcome to flora.", 0, 0);
+    println!("Welcome to flora.\n\r");
 
     loop {
         core::hint::spin_loop(); // Loop without overheating
