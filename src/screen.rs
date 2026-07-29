@@ -1,8 +1,5 @@
 use const_format::concatcp;
-use uefi::proto::console::{
-    gop::{GraphicsOutput, PixelFormat},
-    text::Output,
-};
+use uefi::proto::console::gop::{GraphicsOutput, PixelFormat};
 
 use crate::config::{ERROR_FLAG, FONT_SCALE};
 
@@ -147,8 +144,15 @@ impl Screen {
     }
 
     pub fn clear() {
-        uefi::system::with_stdout(Output::clear)
-            .expect(concatcp!(ERROR_FLAG, "Failed to clear screen."));
+        unsafe {
+            let total_bytes = STRIDE * SCREEN_HEIGHT * 4;
+
+            // Write 0 to all bytes in the frame buffer
+            core::ptr::write_bytes(FB_PTR, 0, total_bytes);
+
+            CURSOR_X = 0;
+            CURSOR_Y = 0;
+        }
     }
 
     pub fn draw_pixel(x: usize, y: usize, color: (u8, u8, u8)) {
@@ -244,6 +248,10 @@ impl Screen {
                 if c == '\r' {
                     CURSOR_X = 0;
                     continue;
+                }
+
+                if c == '\x08' {
+                    CURSOR_X -= 8 * FONT_SCALE;
                 }
 
                 // Prevent crashes from overflow or underflow

@@ -3,12 +3,13 @@ extern crate alloc;
 use crate::{
     config::{self, ERROR_FLAG},
     power::Power,
+    print,
     screen::Screen,
 };
 use alloc::string::String;
 use const_format::concatcp;
 use spin::{LazyLock, Mutex};
-use uefi::{print, proto::console::text::Key};
+use uefi::proto::console::text::Key;
 
 static COMMAND: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
 static COMMANDS_TABLE: [(&str, fn()); 2] = [("clear", Screen::clear), ("off", Power::shut_down)];
@@ -61,7 +62,9 @@ impl Shell {
     fn execute_command() {
         let mut command = COMMAND.lock();
 
-        if !command.is_empty() {
+        if command.is_empty() {
+            print!("\r\n");
+        } else {
             print!("\r\n");
 
             let mut command_found = false;
@@ -75,13 +78,16 @@ impl Shell {
             }
 
             if !command_found {
-                // print!(concatcp!(ERROR_FLAG, "Command not found."));
+                print!("{}Command not found.", ERROR_FLAG);
+            }
+
+            if *command != "clear" {
+                print!("\r\n");
             }
 
             *command = String::new();
         }
 
-        print!("\r\n");
         Self::print_prompt();
     }
 }
