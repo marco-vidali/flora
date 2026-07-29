@@ -35,7 +35,7 @@ impl Shell {
 
     fn read_key() -> Option<Key> {
         uefi::system::with_stdin(|stdin| stdin.read_key())
-            .expect(concatcp!(ERROR_FLAG, "Failed to access keyboard."))
+            .expect(concatcp!(ERROR_FLAG, " Failed to access keyboard."))
     }
 
     fn handle_key(key: Key) {
@@ -78,7 +78,7 @@ impl Shell {
             }
 
             if !command_found {
-                print!("{}Command not found.", ERROR_FLAG);
+                print!("{} Command not found.", ERROR_FLAG);
             }
 
             if *command != "clear" {

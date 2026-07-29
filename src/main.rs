@@ -7,7 +7,7 @@ use uefi::Status;
 
 #[uefi::entry]
 fn main() -> Status {
-    uefi::helpers::init().expect(concatcp!(ERROR_FLAG, "Failed to init UEFI boot services.")); // Init UEFI boot services
+    uefi::helpers::init().expect(concatcp!(ERROR_FLAG, " Failed to init UEFI boot services.")); // Init UEFI boot services
 
     Screen::init();
     Screen::clear();

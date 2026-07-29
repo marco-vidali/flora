@@ -117,11 +117,11 @@ impl Screen {
         // Open Graphics Output Protocol
         let gop_handle = uefi::boot::get_handle_for_protocol::<GraphicsOutput>().expect(concatcp!(
             ERROR_FLAG,
-            "Failed to get graphics output protocol handle."
+            " Failed to get graphics output protocol handle."
         ));
 
         let mut gop = uefi::boot::open_protocol_exclusive::<GraphicsOutput>(gop_handle).expect(
-            concatcp!(ERROR_FLAG, "Failed to open graphics output protocol."),
+            concatcp!(ERROR_FLAG, " Failed to open graphics output protocol."),
         );
 
         // Get GOP information
