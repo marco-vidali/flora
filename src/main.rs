@@ -2,7 +2,7 @@
 #![no_main]
 
 use const_format::concatcp;
-use flora::{config::ERROR_FLAG, print, println, screen::Screen};
+use flora::{config::ERROR_FLAG, println, screen::Screen};
 use uefi::Status;
 
 #[uefi::entry]
