@@ -2,17 +2,24 @@ extern crate alloc;
 
 use crate::{
     config::{self, ERROR_FLAG},
+    file_system::FileSystem,
     power::Power,
     print,
     screen::Screen,
 };
+
 use alloc::string::String;
+use alloc::vec::Vec;
 use const_format::concatcp;
 use spin::{LazyLock, Mutex};
 use uefi::proto::console::text::Key;
-
 static COMMAND: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
-static COMMANDS_TABLE: [(&str, fn()); 2] = [("clear", Screen::clear), ("off", Power::shut_down)];
+
+static COMMANDS_TABLE: [(&str, fn(&[&str])); 3] = [
+    ("clear", |_| Screen::clear()),
+    ("off", |_| Power::shut_down()),
+    ("ls", |args| FileSystem::list_directory_entries(args)),
+];
 
 pub struct Shell;
 
@@ -68,12 +75,20 @@ impl Shell {
             print!("\r\n");
 
             let mut command_found = false;
+            let mut command_parts = command.as_str().split_whitespace();
+
+            let command_name = command_parts
+                .next()
+                .expect(concatcp!("{} Failed to get command name.", ERROR_FLAG));
 
             // Find corresponding function and execute it
-            for c in COMMANDS_TABLE {
-                if c.0 == command.as_str() {
+            for (name, func) in COMMANDS_TABLE {
+                if name == command_name {
+                    let args: Vec<&str> = command_parts.collect();
+                    func(&args);
+
                     command_found = true;
-                    c.1();
+                    break;
                 }
             }
 
